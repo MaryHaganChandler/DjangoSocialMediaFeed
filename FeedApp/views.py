@@ -144,7 +144,7 @@ def friends(request):
         #This will just be everyone except for people who are already friends,
         #   people we've already sent a friend request to, and myself.
     all_profiles = Profile.objects.exclude(user = request.user).exclude(
-        id__in= user_friends_profiles).exclude(id__in = request.sent_profiles)
+        id__in= user_friends_profiles).exclude(id__in = request_sent_profiles)
 
     #Get a list of friend requests received.
     request_received_profiles = Relationship.objects.filter(receiver=user_profile, status = 'sent')
