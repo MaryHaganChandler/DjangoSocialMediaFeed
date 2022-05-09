@@ -92,12 +92,9 @@ def friendsfeed(request):
         print(post_to_like)
         like_already_exists = Like.objects.filter(post_id= post_to_like, username =request.user)
             #Make sure the same user doesn't like the same post more than once.
-        if not like_already_exists():
+        if not like_already_exists.exists():
             Like.objects.create(post_id = post_to_like, username = request.user)
             return redirect("FeedApp:friendsfeed") #refreshes the page with the updated content
-
-
-
 
     context = {'posts': posts, 'zipped_list': zipped_list}
     return render(request, 'FeedApp/friendsfeed.html', context)
@@ -170,7 +167,7 @@ def friends(request):
     #Process all requests that have been received.
     if request.method == 'POST' and request.POST.get("receive_requests"):
         #Get a list of all of the senders.
-        senders = request.POST.getlist("friend_requests")
+        senders = request.POST.getlist("receive_requests")
         for sender in senders:
             #Update the relationship model for the sender to status 'accepted'
             Relationship.objects.filter(id = sender).update(status = 'accepted')
